@@ -4,11 +4,13 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Repository
-public class EmployeeRepository {
+public class EmployeeRepository{
     private static final List<Employee> employees = new ArrayList<>();
 
     static {
@@ -50,7 +52,6 @@ public class EmployeeRepository {
                 .filter(employee -> employee.getId() == updatedEmployee.getId())
                 .findFirst()
                 .orElseThrow(EmployeeNotFoundException::new);
-
         existingEmployee.setAge(updatedEmployee.getAge());
         existingEmployee.setSalary(updatedEmployee.getSalary());
         return existingEmployee;
@@ -58,5 +59,14 @@ public class EmployeeRepository {
 
     public void deleteEmployee(Long id) {
         employees.removeIf(employee -> employee.getId() == id);
+    }
+
+    public List<Employee> getEmployeesByPage(int pageNumber, int pageSize) {
+        int startIndex = (pageNumber - 1) * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, employees.size());
+
+        return IntStream.range(startIndex, endIndex)
+                .mapToObj(employees::get)
+                .collect(Collectors.toList());
     }
 }

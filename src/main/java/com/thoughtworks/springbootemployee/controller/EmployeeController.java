@@ -17,8 +17,9 @@ public class EmployeeController {
     EmployeeRepository employeeRepository;
 
     @GetMapping
-    public List<Employee> listAll() {
-        return employeeRepository.getEmployees();
+    public List<Employee> listAll (@RequestParam(defaultValue = "1") int pageNumber,
+                                   @RequestParam(defaultValue = "5") int pageSize) {
+        return employeeRepository.getEmployeesByPage(pageNumber, pageSize);
     }
 
     @GetMapping("/{id}")
