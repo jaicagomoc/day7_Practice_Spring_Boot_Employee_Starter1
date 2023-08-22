@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 public class EmployeeRepository{
     private static final List<Employee> employees = new ArrayList<>();
     static {
-        long companyId = 0;
+        long companyId = 1L;
         employees.add(new Employee(1L, "Jess", 25, "male", companyId, 134324));
         employees.add(new Employee(2L, "Jessr", 25, "male", companyId, 134324));
         employees.add(new Employee(3L, "Alice", 25, "female", companyId, 134324));

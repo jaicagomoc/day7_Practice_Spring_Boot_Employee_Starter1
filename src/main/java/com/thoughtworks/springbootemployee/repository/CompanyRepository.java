@@ -33,4 +33,9 @@ public class CompanyRepository {
                 .mapToObj(companies::get)
                 .collect(Collectors.toList());
     }
+
+    public Company saveCompany(Company company) {
+        companies.add(company);
+        return company;
+    }
 }

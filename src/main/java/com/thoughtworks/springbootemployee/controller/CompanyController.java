@@ -4,10 +4,9 @@ import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +23,10 @@ public class CompanyController {
     @GetMapping("/{id}")
     public Company findById(@PathVariable Long id) {
         return companyRepository.findById(id);
+    }
+    @PostMapping
+    public ResponseEntity<String> saveCompany(@RequestBody Company company) {
+        companyRepository.saveCompany(company);
+        return new ResponseEntity<>(company.getName() + " was added to the list of Employee.", HttpStatus.CREATED);
     }
 }
