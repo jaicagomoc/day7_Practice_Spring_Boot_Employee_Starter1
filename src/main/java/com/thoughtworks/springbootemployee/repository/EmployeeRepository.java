@@ -49,19 +49,14 @@ public class EmployeeRepository {
         Employee existingEmployee = employees.stream()
                 .filter(employee -> employee.getId() == updatedEmployee.getId())
                 .findFirst()
-                .orElse(null);
-        if (existingEmployee == null) {
-            throw new EmployeeNotFoundException();
-        }
+                .orElseThrow(EmployeeNotFoundException::new);
+
         existingEmployee.setAge(updatedEmployee.getAge());
         existingEmployee.setSalary(updatedEmployee.getSalary());
         return existingEmployee;
     }
 
     public void deleteEmployee(Long id) {
-        Employee existingEmployee = findById(id);
-        if (existingEmployee != null) {
-            employees.remove(existingEmployee);
-        }
+        employees.removeIf(employee -> employee.getId() == id);
     }
 }
