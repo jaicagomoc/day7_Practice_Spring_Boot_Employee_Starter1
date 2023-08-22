@@ -39,19 +39,29 @@ public class EmployeeRepository {
                 .filter(employee -> employee.getGender().equals(gender))
                 .collect(Collectors.toList());
     }
+
     public Employee saveEmployee(Employee employee) {
         employees.add(employee);
         return employee;
     }
+
     public Employee updateEmployee(Employee updatedEmployee) {
         Employee existingEmployee = employees.stream()
                 .filter(employee -> employee.getId() == updatedEmployee.getId())
                 .findFirst()
                 .orElse(null);
         if (existingEmployee == null) {
-            throw new EmployeeNotFoundException();}
+            throw new EmployeeNotFoundException();
+        }
         existingEmployee.setAge(updatedEmployee.getAge());
         existingEmployee.setSalary(updatedEmployee.getSalary());
         return existingEmployee;
+    }
+
+    public void deleteEmployee(Long id) {
+        Employee existingEmployee = findById(id);
+        if (existingEmployee != null) {
+            employees.remove(existingEmployee);
+        }
     }
 }

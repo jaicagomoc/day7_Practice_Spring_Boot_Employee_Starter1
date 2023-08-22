@@ -46,5 +46,15 @@ public class EmployeeController {
         existingEmployee.setSalary(updatedEmployee.getSalary());
         return new ResponseEntity<>(existingEmployee.getName() + " was updated.", HttpStatus.OK);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
+        Employee existingEmployee = employeeRepository.findById(id);
+        if (existingEmployee == null) {
+            return ResponseEntity.notFound().build();
+        }
+        employeeRepository.deleteEmployee(id);
+        return new ResponseEntity<>(existingEmployee.getName() + " was deleted.", HttpStatus.OK);
+    }
+
 
 }
