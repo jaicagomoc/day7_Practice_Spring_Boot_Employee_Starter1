@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.repository;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -16,4 +17,11 @@ public class CompanyRepository {
         companies.add(new Company(4L, "FourthCompany"));
     }
     public List<Company> getCompanies() {return companies;}
+
+    public Company findById(Long id) {
+        return companies.stream()
+                .filter(company -> company.getId() == id)
+                .findFirst()
+                .orElseThrow(CompanyNotFoundException::new);
+    }
 }
