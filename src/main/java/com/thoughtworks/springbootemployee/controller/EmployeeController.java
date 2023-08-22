@@ -34,7 +34,17 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<String> saveEmployee(@RequestBody Employee employee) {
         employeeRepository.saveEmployee(employee);
-        return new ResponseEntity<>(employee.getName() + " was added to the list of Employee.", HttpStatus.OK);
+        return new ResponseEntity<>(employee.getName() + " was added to the list of Employee.", HttpStatus.CREATED);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
+        Employee existingEmployee = employeeRepository.findById(id);
+        if (existingEmployee == null) {
+            return ResponseEntity.notFound().build();
+        }
+        existingEmployee.setAge(updatedEmployee.getAge());
+        existingEmployee.setSalary(updatedEmployee.getSalary());
+        return new ResponseEntity<>(existingEmployee.getName() + " was updated.", HttpStatus.OK);
     }
 
 }

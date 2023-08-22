@@ -1,5 +1,4 @@
 package com.thoughtworks.springbootemployee.model;
-
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 
@@ -40,4 +39,14 @@ public class Employee {
     public Integer getSalary() {
         return salary;
     }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public void setSalary(Integer salary) {
+        this.salary = salary;
+
+    }
+
 }
