@@ -12,12 +12,12 @@ import java.util.stream.IntStream;
 public class EmployeeRepository{
     private static final List<Employee> employees = new ArrayList<>();
     static {
-
-        employees.add(new Employee(1L, "Jess", 25, "male", 134324));
-        employees.add(new Employee(2L, "Jessr", 25, "male", 134324));
-        employees.add(new Employee(3L, "Alice", 25, "female", 134324));
-        employees.add(new Employee(4L, "Leah", 25, "female", 134324));
-        employees.add(new Employee(5L, "Jessriel", 25, "male", 134324));
+        long companyId = 0;
+        employees.add(new Employee(1L, "Jess", 25, "male", companyId, 134324));
+        employees.add(new Employee(2L, "Jessr", 25, "male", companyId, 134324));
+        employees.add(new Employee(3L, "Alice", 25, "female", companyId, 134324));
+        employees.add(new Employee(4L, "Leah", 25, "female", companyId, 134324));
+        employees.add(new Employee(5L, "Jessriel", 25, "male", companyId, 134324));
 
     }
     public List<Employee> getEmployees() {

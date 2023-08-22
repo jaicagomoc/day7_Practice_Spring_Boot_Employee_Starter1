@@ -7,14 +7,16 @@ public class Employee {
     private Integer age;
 
     private String gender;
+    private long companyId;
 
     private Integer salary;
 
-    public Employee(long id, String name, Integer age, String gender, Integer salary) {
+    public Employee(long id, String name, Integer age, String gender, long companyId, Integer salary) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.gender = gender;
+        this.companyId = companyId;
         this.salary = salary;
     }
 
