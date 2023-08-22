@@ -1,7 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +26,15 @@ public class CompanyController {
     @PostMapping
     public ResponseEntity<String> saveCompany(@RequestBody Company company) {
         companyRepository.saveCompany(company);
-        return new ResponseEntity<>(company.getName() + " was added to the list of Employee.", HttpStatus.CREATED);
+        return new ResponseEntity<>(company.getCompanyName() + " was added to the list of Employee.", HttpStatus.CREATED);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateCompany(@PathVariable Long id, @RequestBody Company updatedCompany) {
+        Company existingCompany = companyRepository.findById(id);
+        if (existingCompany == null) {
+            return ResponseEntity.notFound().build();
+        }
+        existingCompany.setAge(updatedCompany.getCompanyName());
+        return new ResponseEntity<>(existingCompany.getCompanyName() + " was updated.", HttpStatus.OK);
     }
 }
