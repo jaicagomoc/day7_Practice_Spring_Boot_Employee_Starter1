@@ -4,7 +4,6 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -12,7 +11,6 @@ import java.util.stream.IntStream;
 @Repository
 public class EmployeeRepository{
     private static final List<Employee> employees = new ArrayList<>();
-
     static {
 
         employees.add(new Employee(1L, "Jess", 25, "male", 134324));
@@ -22,8 +20,6 @@ public class EmployeeRepository{
         employees.add(new Employee(5L, "Jessriel", 25, "male", 134324));
 
     }
-
-
     public List<Employee> getEmployees() {
         return employees;
     }
