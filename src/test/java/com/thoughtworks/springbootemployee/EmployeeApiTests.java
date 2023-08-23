@@ -19,14 +19,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class EmployeeApiTests {
+public class EmployeeApiTests {
 
     private MockMvc mockMvcClient;
     private final EmployeeRepository employeeRepository;
@@ -114,4 +114,19 @@ class EmployeeApiTests {
     }
 
 
+        // When,
+        int pageNumber = 1;
+        int pageSize = 2;
+        //Then
+        mockMvcClient.perform(MockMvcRequestBuilders.get("/employees")
+                        .param("pageNumber", String.valueOf(pageNumber))
+                        .param("pageSize", String.valueOf(pageSize)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(pageSize)))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[1].id").value(2));
+    }
+
 }
+
+

@@ -22,9 +22,9 @@ public class EmployeeRepository {
     private static final List<Employee> employees = new ArrayList<>();
 
     static {
-        employees.add(new Employee(1L, "Jai", 25, "male", 134324, 1L));
+        employees.add(new Employee(1L, "Alice", 24, "female", 134324, 1L));
         employees.add(new Employee(2L, "Ra", 25, "male", 134324, 1L));
-        employees.add(new Employee(3L, "Alice", 25, "female", 134324, 2L));
+        employees.add(new Employee(3L, "Jai", 25, "female", 134324, 2L));
         employees.add(new Employee(4L, "Leah", 25, "female", 134324, 1L));
         employees.add(new Employee(5L, "Nina", 25, "male", 134324, 1L));
     }
