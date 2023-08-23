@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,12 +14,20 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
+
+    private final EmployeeRepository employeeRepository;
+
+    private final CompanyRepository companyRepository;
+
     @Autowired
-    EmployeeRepository employeeRepository;
+    public EmployeeController(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
+        this.employeeRepository = employeeRepository;
+        this.companyRepository = companyRepository;
+    }
 
     @GetMapping
-    public List<Employee> listAll (@RequestParam(defaultValue = "1") int pageNumber,
-                                   @RequestParam(defaultValue = "5") int pageSize) {
+    public List<Employee> listAll(@RequestParam(defaultValue = "1") int pageNumber,
+                                  @RequestParam(defaultValue = "5") int pageSize) {
         return employeeRepository.getEmployeesByPage(pageNumber, pageSize);
     }
 
@@ -32,25 +41,37 @@ public class EmployeeController {
         return employeeRepository.findByGender(gender);
     }
 
+
     @PostMapping
-    public ResponseEntity<String> saveEmployee(@RequestBody Employee employee) {
-        employeeRepository.saveEmployee(employee);
+    public ResponseEntity<String> insertEmployeeById(@RequestBody Employee employee) {
+        employeeRepository.insertEmployeeBy(employee);
         return new ResponseEntity<>(employee.getName() + " was added to the list of Employee.", HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
+    public ResponseEntity<String> updateEmployeeById(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
         Employee existingEmployee = employeeRepository.findById(id);
-        if (existingEmployee == null) {return ResponseEntity.notFound().build();}
+        ResponseEntity<String> build = getStringResponseEntity(existingEmployee);
+        if (build != null) return build;
         existingEmployee.setAge(updatedEmployee.getAge());
         existingEmployee.setSalary(updatedEmployee.getSalary());
         return new ResponseEntity<>(existingEmployee.getName() + " was updated.", HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<String> deleteEmployeeById(@PathVariable Long id) {
         Employee existingEmployee = employeeRepository.findById(id);
-        if (existingEmployee == null) {return ResponseEntity.notFound().build();}
-        employeeRepository.deleteEmployee(id);
+        ResponseEntity<String> build = getStringResponseEntity(existingEmployee);
+        if (build != null) return build;
+        employeeRepository.deleteEmployeeById(id);
         return new ResponseEntity<>(existingEmployee.getName() + " was deleted.", HttpStatus.OK);
+    }
+
+    private static ResponseEntity<String> getStringResponseEntity(Employee existingEmployee) {
+        if (existingEmployee == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return null;
     }
 
 

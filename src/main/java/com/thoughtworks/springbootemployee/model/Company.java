@@ -1,23 +1,35 @@
 package com.thoughtworks.springbootemployee.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Company {
-    private final long companyId;
-    private String companyName;
+    private final long id;
+    private String name;
+    private List<Employee> employees;
 
-    public Company(long companyId, String companyName) {
-        this.companyId = companyId;
-        this.companyName = companyName;
-    }
-    public long getCompanyId() {
-        return companyId;
-    }
-
-    public String getCompanyName() {
-        return companyName;
+    public Company(long id, String name) {
+        this.id = id;
+        this.name = name;
+        this.employees = new ArrayList<>();
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public long getId() {
+        return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+    }
 }
