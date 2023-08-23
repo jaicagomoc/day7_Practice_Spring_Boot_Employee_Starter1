@@ -43,10 +43,27 @@ public class EmployeeApiTests {
 
     @BeforeEach
     public void setUp() {
+        employeeRepository.cleanAllEmployees();
         mockMvcClient = MockMvcBuilders.standaloneSetup(new EmployeeController(employeeRepository, companyRepository)).build();
     }
 
+    @Test
+    void should_return_all_employees_when_perform_get_employees() throws Exception {
+        // Given
+        Employee alice = employeeRepository.saveEmployee(new Employee(1L, "Alice", 24,
+                "Female", 9000, 1L));
 
+        // When, Then
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id").value(alice.getId()))
+                .andExpect(jsonPath("$[0].name").value(alice.getName()))
+                .andExpect(jsonPath("$[0].age").value(alice.getAge()))
+                .andExpect(jsonPath("$[0].gender").value(alice.getGender()))
+                .andExpect(jsonPath("$[0].salary").value(alice.getSalary()))
+                .andExpect(jsonPath("$[0].companyId").value(alice.getCompanyId()));
+    }
     @Test
     void should_return_the_employee_when_perform_get_employee_given_the_employee_id() throws Exception {
         //given

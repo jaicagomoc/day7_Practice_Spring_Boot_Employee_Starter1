@@ -89,7 +89,7 @@ public class EmployeeRepository {
     }
 
 
-    public void cleanAll() {
+    public void cleanAllEmployees() {
         employees.clear();
     }
 
