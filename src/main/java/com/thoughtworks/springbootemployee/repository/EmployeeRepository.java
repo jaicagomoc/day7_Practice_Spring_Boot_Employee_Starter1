@@ -39,7 +39,9 @@ public class EmployeeRepository {
     }
 
     public Employee findById(Long id) {
-        return employees.stream().filter(employee -> Objects.equals(employee.getId(), id)).findFirst().orElseThrow(EmployeeNotFoundException::new);
+        return employees.stream().filter(employee -> Objects.equals(employee.getId(), id))
+                .findFirst()
+                .orElseThrow(EmployeeNotFoundException::new);
     }
 
     public List<Employee> findByGender(String gender) {
@@ -52,7 +54,10 @@ public class EmployeeRepository {
     }
 
     public Employee updateEmployee(Employee updatedEmployee) {
-        Employee existingEmployee = employees.stream().filter(employee -> Objects.equals(employee.getId(), updatedEmployee.getId())).findFirst().orElseThrow(EmployeeNotFoundException::new);
+        Employee existingEmployee = employees.stream().filter(employee -> Objects.
+                        equals(employee.getId(), updatedEmployee.getId()))
+                .findFirst()
+                .orElseThrow(EmployeeNotFoundException::new);
         existingEmployee.setAge(updatedEmployee.getAge());
         existingEmployee.setSalary(updatedEmployee.getSalary());
         return existingEmployee;
