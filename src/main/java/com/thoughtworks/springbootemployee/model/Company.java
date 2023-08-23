@@ -16,7 +16,7 @@ public class Company {
         return companyName;
     }
 
-    public void setAge(String name) {
-        this.companyName = name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

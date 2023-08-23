@@ -29,12 +29,12 @@ public class CompanyController {
         return new ResponseEntity<>(company.getCompanyName() + " was added to the list of Employee.", HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateCompany(@PathVariable Long id, @RequestBody Company updatedCompany) {
-        Company existingCompany = companyRepository.findById(id);
+    public ResponseEntity<String> updateCompany(@PathVariable Long companyId, @RequestBody Company updatedCompany) {
+        Company existingCompany = companyRepository.findById(companyId);
         if (existingCompany == null) {
             return ResponseEntity.notFound().build();
         }
-        existingCompany.setAge(updatedCompany.getCompanyName());
+        existingCompany.setCompanyName(updatedCompany.getCompanyName());
         return new ResponseEntity<>(existingCompany.getCompanyName() + " was updated.", HttpStatus.OK);
     }
 }

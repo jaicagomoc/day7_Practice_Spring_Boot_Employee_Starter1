@@ -19,9 +19,9 @@ public class CompanyRepository {
     }
     public List<Company> getCompanies() {return companies;}
 
-    public Company findById(Long id) {
+    public Company findById(Long companyId) {
         return companies.stream()
-                .filter(company -> company.getCompanyId() == id)
+                .filter(company -> company.getCompanyId() == companyId)
                 .findFirst()
                 .orElseThrow(CompanyNotFoundException::new);
     }
@@ -33,7 +33,6 @@ public class CompanyRepository {
                 .mapToObj(companies::get)
                 .collect(Collectors.toList());
     }
-
     public Company saveCompany(Company company) {
         companies.add(company);
         return company;
