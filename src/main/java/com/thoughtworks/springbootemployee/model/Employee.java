@@ -3,11 +3,11 @@ package com.thoughtworks.springbootemployee.model;
 public class Employee {
 
     private long id;
-    private String name;
+    private long companyId;
+    private final String name;
     private Integer age;
 
-    private String gender;
-    private long companyId;
+    private final String gender;
 
     private Integer salary;
 

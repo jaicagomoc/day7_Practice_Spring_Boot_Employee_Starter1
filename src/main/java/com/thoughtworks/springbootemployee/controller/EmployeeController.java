@@ -40,9 +40,7 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public ResponseEntity<String> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
         Employee existingEmployee = employeeRepository.findById(id);
-        if (existingEmployee == null) {
-            return ResponseEntity.notFound().build();
-        }
+        if (existingEmployee == null) {return ResponseEntity.notFound().build();}
         existingEmployee.setAge(updatedEmployee.getAge());
         existingEmployee.setSalary(updatedEmployee.getSalary());
         return new ResponseEntity<>(existingEmployee.getName() + " was updated.", HttpStatus.OK);
@@ -50,9 +48,7 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
         Employee existingEmployee = employeeRepository.findById(id);
-        if (existingEmployee == null) {
-            return ResponseEntity.notFound().build();
-        }
+        if (existingEmployee == null) {return ResponseEntity.notFound().build();}
         employeeRepository.deleteEmployee(id);
         return new ResponseEntity<>(existingEmployee.getName() + " was deleted.", HttpStatus.OK);
     }

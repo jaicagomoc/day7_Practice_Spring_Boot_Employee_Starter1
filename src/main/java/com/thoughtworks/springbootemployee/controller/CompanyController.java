@@ -19,22 +19,22 @@ public class CompanyController {
     public List<Company> listAll() {
         return companyRepository.getCompanies();
     }
-    @GetMapping("/{id}")
-    public Company findById(@PathVariable Long id) {
-        return companyRepository.findById(id);
+    @GetMapping("/{companyId}")
+    public Company findById(@PathVariable Long companyId) {
+        return companyRepository.findById(companyId);
     }
     @PostMapping
     public ResponseEntity<String> saveCompany(@RequestBody Company company) {
         companyRepository.saveCompany(company);
         return new ResponseEntity<>(company.getCompanyName() + " was added to the list of Employee.", HttpStatus.CREATED);
     }
-    @PutMapping("/{id}")
+
+    @PutMapping("/{companyId}")
     public ResponseEntity<String> updateCompany(@PathVariable Long companyId, @RequestBody Company updatedCompany) {
         Company existingCompany = companyRepository.findById(companyId);
-        if (existingCompany == null) {
-            return ResponseEntity.notFound().build();
-        }
+        if (existingCompany == null) {return ResponseEntity.notFound().build();}
         existingCompany.setCompanyName(updatedCompany.getCompanyName());
         return new ResponseEntity<>(existingCompany.getCompanyName() + " was updated.", HttpStatus.OK);
     }
+
 }

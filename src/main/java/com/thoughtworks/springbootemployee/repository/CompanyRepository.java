@@ -37,4 +37,13 @@ public class CompanyRepository {
         companies.add(company);
         return company;
     }
+    public Company updateCompany(Company updatedCompany) {
+        Company existingCompany = companies.stream()
+                .filter(company -> company.getCompanyId() == updatedCompany.getCompanyId())
+                .findFirst()
+                .orElseThrow(EmployeeNotFoundException::new);
+        existingCompany.setCompanyName(updatedCompany.getCompanyName());
+        return existingCompany;
+    }
+
 }

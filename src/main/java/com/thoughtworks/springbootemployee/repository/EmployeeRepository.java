@@ -37,9 +37,8 @@ public class EmployeeRepository{
                 .collect(Collectors.toList());
     }
 
-    public Employee saveEmployee(Employee employee) {
+    public void saveEmployee(Employee employee) {
         employees.add(employee);
-        return employee;
     }
 
     public Employee updateEmployee(Employee updatedEmployee) {
