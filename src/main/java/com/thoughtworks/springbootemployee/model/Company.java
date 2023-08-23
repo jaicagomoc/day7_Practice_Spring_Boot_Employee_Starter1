@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Company {
-    private final long id;
+    private long id;
     private String name;
     private List<Employee> employees;
 
@@ -12,6 +12,8 @@ public class Company {
         this.id = id;
         this.name = name;
         this.employees = new ArrayList<>();
+    }
+    public Company() {
     }
 
     public long getId() {

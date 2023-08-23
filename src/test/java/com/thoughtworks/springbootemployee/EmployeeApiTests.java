@@ -64,6 +64,7 @@ public class EmployeeApiTests {
                 .andExpect(jsonPath("$[0].salary").value(alice.getSalary()))
                 .andExpect(jsonPath("$[0].companyId").value(alice.getCompanyId()));
     }
+
     @Test
     void should_return_the_employee_when_perform_get_employee_given_the_employee_id() throws Exception {
         //given
@@ -80,7 +81,6 @@ public class EmployeeApiTests {
                 .andExpect(jsonPath("$.companyId").value(alice.getCompanyId()));
     }
 
-
     @Test
     void should_return_list_of_employee_by_given_gender_when_perform_get_employee_given_gender() throws Exception {
         //Given
@@ -94,8 +94,6 @@ public class EmployeeApiTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(femaleEmployees.size()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].gender").value(Matchers.everyItem(Matchers.is(employeeGender))));
     }
-
-//
 
     @Test
     void should_return_updated_employee_when_perform_put_employee_given_existing_employee_id_and_updated_data() throws Exception {
