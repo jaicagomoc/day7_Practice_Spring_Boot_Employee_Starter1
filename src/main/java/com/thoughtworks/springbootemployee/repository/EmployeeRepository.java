@@ -15,6 +15,9 @@ import java.util.stream.IntStream;
 @Repository
 public class EmployeeRepository {
 
+
+    private static final Long START_ID_MINUS_ONE = 0L;
+    private static final long ID_INCREMENT = 1;
     private final CompanyRepository companyRepository;
     private static final List<Employee> employees = new ArrayList<>();
 
@@ -55,6 +58,7 @@ public class EmployeeRepository {
         return existingEmployee;
     }
 
+
     public void deleteEmployeeById(Long id) {
         employees.removeIf(employee -> Objects.equals(employee.getId(), id));
     }
@@ -71,6 +75,32 @@ public class EmployeeRepository {
         if (company == null) {
             return Collections.emptyList();
         }
-        return employees.stream().filter(employee -> employee.getCompanyId().equals(id)).collect(Collectors.toList());
+        return employees.stream()
+                .filter(employee -> employee.getCompanyId().equals(id))
+                .collect(Collectors.toList());
+    }
+
+
+    public void cleanAll() {
+        employees.clear();
+    }
+
+    public Employee saveEmployee(Employee employee) {
+        Long id = generateNextId();
+        employee.setId(id);
+        employees.add(employee);
+
+        return employee;
+    }
+
+    private Long generateNextId() {
+        return employees.stream()
+                .mapToLong(Employee::getId)
+                .max()
+                .orElse(START_ID_MINUS_ONE) + ID_INCREMENT;
+    }
+
+    public List<Employee> listAll() {
+        return employees;
     }
 }

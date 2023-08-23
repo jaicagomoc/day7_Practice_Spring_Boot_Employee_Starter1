@@ -24,8 +24,12 @@ public class EmployeeController {
         this.employeeRepository = employeeRepository;
         this.companyRepository = companyRepository;
     }
-
     @GetMapping
+    public List<Employee> listAllEmployees(){
+        return employeeRepository.listAll();
+    }
+
+    @GetMapping(params = {"pageNumber","pageSize"})
     public List<Employee> listAll(@RequestParam(defaultValue = "1") int pageNumber,
                                   @RequestParam(defaultValue = "5") int pageSize) {
         return employeeRepository.getEmployeesByPage(pageNumber, pageSize);
