@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.controller.EmployeeController;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -74,13 +78,18 @@ public class EmployeeApiTests {
                 .andExpect(jsonPath("$.salary").value(alice.getSalary()))
                 .andExpect(jsonPath("$.companyId").value(alice.getCompanyId()));
     }
-//    @Test
-//    void should_return_404_not_found_when_perform_get_employee_given_not_existing_employee_id() throws Exception {
-//        //given
-//        long notExistingEmployeeId = 99L;
-//        //when
-//        mockMvcClient.perform(MockMvcRequestBuilders.get("/employees/" + notExistingEmployeeId))
-//                .andExpect(status().isNotFound());
-//    }
 
+    @Test
+    void should_return_list_of_employee_by_given_gender_when_perform_get_employee_given_gender() throws Exception {
+        //Given
+        String employeeGender = "female";
+        List<Employee> femaleEmployees = employeeRepository.findByGender(employeeGender);
+
+        // When Then
+        mockMvcClient.perform(MockMvcRequestBuilders.get("/employees").param("gender", employeeGender))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(femaleEmployees.size()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].gender").value(Matchers.everyItem(Matchers.is(employeeGender))));
+    }
 }
