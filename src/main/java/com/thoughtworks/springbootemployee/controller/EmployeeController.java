@@ -1,11 +1,10 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +16,10 @@ public class EmployeeController {
 
     private final EmployeeRepository employeeRepository;
 
-    private final CompanyRepository companyRepository;
 
     @Autowired
     public EmployeeController(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
         this.employeeRepository = employeeRepository;
-        this.companyRepository = companyRepository;
     }
     @GetMapping
     public List<Employee> listAllEmployees(){
@@ -30,8 +27,8 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"pageNumber","pageSize"})
-    public List<Employee> listAll(@RequestParam(defaultValue = "1") int pageNumber,
-                                  @RequestParam(defaultValue = "5") int pageSize) {
+    public List<Employee> listAll(@RequestParam(required = false) int pageNumber,
+                                  @RequestParam(required = false) int pageSize) {
         return employeeRepository.getEmployeesByPage(pageNumber, pageSize);
     }
 
@@ -48,35 +45,34 @@ public class EmployeeController {
 
 
     @PostMapping
-    public ResponseEntity<String> insertEmployeeById(@RequestBody Employee employee) {
-        employeeRepository.insertEmployeeBy(employee);
-        return new ResponseEntity<>(employee.getName() + " was added to the list of Employee.", HttpStatus.CREATED);
+    public Employee insertEmployeeById(@RequestBody Employee employee) {
+        return employeeRepository.insertEmployeeBy(employee);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateEmployeeById(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
+    public Employee updateEmployeeById(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
         Employee existingEmployee = employeeRepository.findById(id);
-        ResponseEntity<String> build = getStringResponseEntity(existingEmployee);
-        if (build != null) return build;
+        if (existingEmployee == null) {
+            throw new EmployeeNotFoundException();
+        }
         existingEmployee.setAge(updatedEmployee.getAge());
+        existingEmployee.setName(updatedEmployee.getName());
+        existingEmployee.setGender(updatedEmployee.getGender());
         existingEmployee.setSalary(updatedEmployee.getSalary());
-        return new ResponseEntity<>(existingEmployee.getName() + " was updated.", HttpStatus.OK);
+        existingEmployee.setCompanyId(updatedEmployee.getCompanyId());
+
+        return employeeRepository.updateEmployee(existingEmployee);
     }
+
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEmployeeById(@PathVariable Long id) {
+    public Employee deleteEmployeeById(@PathVariable Long id) {
         Employee existingEmployee = employeeRepository.findById(id);
-        ResponseEntity<String> build = getStringResponseEntity(existingEmployee);
-        if (build != null) return build;
-        employeeRepository.deleteEmployeeById(id);
-        return new ResponseEntity<>(existingEmployee.getName() + " was deleted.", HttpStatus.OK);
-    }
-
-    private static ResponseEntity<String> getStringResponseEntity(Employee existingEmployee) {
         if (existingEmployee == null) {
-            return ResponseEntity.notFound().build();
+            throw new EmployeeNotFoundException();
         }
-        return null;
+        employeeRepository.deleteEmployeeById(id);
+        return employeeRepository.deleteEmployeeById(id);
     }
 
 

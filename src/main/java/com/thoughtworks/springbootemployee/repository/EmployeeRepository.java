@@ -26,8 +26,7 @@ public class EmployeeRepository {
         employees.add(new Employee(2L, "Ra", 25, "male", 134324, 1L));
         employees.add(new Employee(3L, "Alice", 25, "female", 134324, 2L));
         employees.add(new Employee(4L, "Leah", 25, "female", 134324, 1L));
-        employees.add(new Employee(5L, "Nina", 25, "male", 134324, 2L));
-
+        employees.add(new Employee(5L, "Nina", 25, "male", 134324, 1L));
     }
 
     public EmployeeRepository(CompanyRepository companyRepository) {
@@ -54,18 +53,22 @@ public class EmployeeRepository {
     }
 
     public Employee updateEmployee(Employee updatedEmployee) {
-        Employee existingEmployee = employees.stream().filter(employee -> Objects.
-                        equals(employee.getId(), updatedEmployee.getId()))
+        Employee existingEmployee = employees.stream()
+                .filter(employee -> Objects.equals(employee.getId(), updatedEmployee.getId()))
                 .findFirst()
                 .orElseThrow(EmployeeNotFoundException::new);
         existingEmployee.setAge(updatedEmployee.getAge());
+        existingEmployee.setName(updatedEmployee.getName());
+        existingEmployee.setGender(updatedEmployee.getGender());
         existingEmployee.setSalary(updatedEmployee.getSalary());
+        existingEmployee.setCompanyId(updatedEmployee.getCompanyId());
         return existingEmployee;
     }
 
 
-    public void deleteEmployeeById(Long id) {
+    public Employee deleteEmployeeById(Long id) {
         employees.removeIf(employee -> Objects.equals(employee.getId(), id));
+        return null;
     }
 
     public List<Employee> getEmployeesByPage(int pageNumber, int pageSize) {
