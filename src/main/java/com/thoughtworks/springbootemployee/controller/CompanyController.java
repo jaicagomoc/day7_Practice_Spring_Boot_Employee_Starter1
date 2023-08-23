@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -35,30 +36,24 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<String> saveCompany(@RequestBody Company company) {
+    public Company saveCompany(@RequestBody Company company) {
         companyRepository.saveCompany(company);
-        return new ResponseEntity<>(company.getName() + " was added to the list of Employee.", HttpStatus.CREATED);
+        return companyRepository.saveCompany(company);
     }
 
     @PutMapping("/{companyId}")
-    public ResponseEntity<String> updateCompany(@PathVariable Long companyId, @RequestBody Company updatedCompany) {
+    public Company updateCompany(@PathVariable Long companyId, @RequestBody Company updatedCompany) {
         Company existingCompany = companyRepository.findById(companyId);
-        ResponseEntity<String> build = getStringResponseEntity(existingCompany);
-        if (build != null) return build;
+        if (existingCompany == null) {
+            throw new EmployeeNotFoundException();
+        }
         existingCompany.setName(updatedCompany.getName());
-        return new ResponseEntity<>(existingCompany.getName() + " was updated.", HttpStatus.OK);
+        return companyRepository.updateCompany(updatedCompany);
     }
 
     @GetMapping("/{id}/employees")
     public List<Employee> getEmployeesByCompanyId(@PathVariable Long companyId) {
         return employeeRepository.getEmployeesByCompanyId(companyId);
-    }
-
-    private static ResponseEntity<String> getStringResponseEntity(Company existingCompany) {
-        if (existingCompany == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return null;
     }
 
 }

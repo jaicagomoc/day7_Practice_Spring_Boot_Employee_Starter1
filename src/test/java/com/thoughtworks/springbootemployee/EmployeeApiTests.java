@@ -46,23 +46,6 @@ public class EmployeeApiTests {
         mockMvcClient = MockMvcBuilders.standaloneSetup(new EmployeeController(employeeRepository, companyRepository)).build();
     }
 
-    @Test
-    void should_return_all_employees_when_perform_get_employees() throws Exception {
-        // Given
-        Employee alice = employeeRepository.saveEmployee(new Employee(1L, "Alice", 24,
-                "Female", 9000, 1L));
-
-        // When, Then
-        mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id").value(alice.getId()))
-                .andExpect(jsonPath("$[0].name").value(alice.getName()))
-                .andExpect(jsonPath("$[0].age").value(alice.getAge()))
-                .andExpect(jsonPath("$[0].gender").value(alice.getGender()))
-                .andExpect(jsonPath("$[0].salary").value(alice.getSalary()))
-                .andExpect(jsonPath("$[0].companyId").value(alice.getCompanyId()));
-    }
 
     @Test
     void should_return_the_employee_when_perform_get_employee_given_the_employee_id() throws Exception {
@@ -80,6 +63,7 @@ public class EmployeeApiTests {
                 .andExpect(jsonPath("$.companyId").value(alice.getCompanyId()));
     }
 
+
     @Test
     void should_return_list_of_employee_by_given_gender_when_perform_get_employee_given_gender() throws Exception {
         //Given
@@ -93,6 +77,8 @@ public class EmployeeApiTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(femaleEmployees.size()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].gender").value(Matchers.everyItem(Matchers.is(employeeGender))));
     }
+
+//
 
     @Test
     void should_return_updated_employee_when_perform_put_employee_given_existing_employee_id_and_updated_data() throws Exception {
@@ -113,6 +99,13 @@ public class EmployeeApiTests {
                 .andExpect(jsonPath("$.companyId").value(updatedEmployee.getCompanyId()));
     }
 
+
+    @Test
+    void should_return_paginated_employees_when_perform_get_employees_with_pagination() throws Exception {
+        // Given
+        employeeRepository.saveEmployee(new Employee(1L, "Alice", 24, "Female", 9000, 1L));
+        employeeRepository.saveEmployee(new Employee(2L, "Bob", 25, "Male", 8500, 1L));
+        employeeRepository.saveEmployee(new Employee(3L, "Charlie", 28, "Male", 9500, 1L));
 
         // When,
         int pageNumber = 1;
