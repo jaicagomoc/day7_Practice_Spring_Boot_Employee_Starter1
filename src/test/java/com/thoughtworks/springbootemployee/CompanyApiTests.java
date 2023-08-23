@@ -1,7 +1,9 @@
 package com.thoughtworks.springbootemployee;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.springbootemployee.controller.CompanyController;
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,10 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,7 +34,23 @@ public class CompanyApiTests {
 
     @BeforeEach
     public void setUp() {
+        companyRepository.cleanAllCompanies();
         mockMvc = MockMvcBuilders.standaloneSetup(new CompanyController(companyRepository, employeeRepository)).build();
+    }
+    @Test
+    void should_return_list_of_companies_when_perform_get_companies() throws Exception {
+        // Given
+        companyRepository.saveCompany(new Company(1L, "FirstCompany"));
+        companyRepository.saveCompany(new Company(2L, "SecondCompany"));
+
+        // When, Then
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].name").value("FirstCompany"))
+                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].name").value("SecondCompany"));
     }
 
     @Test
@@ -43,4 +63,5 @@ public class CompanyApiTests {
                 .andExpect(jsonPath("$.id").value(company.getId()))
                 .andExpect(jsonPath("$.name").value("FirstCompany"));
     }
+
 }
