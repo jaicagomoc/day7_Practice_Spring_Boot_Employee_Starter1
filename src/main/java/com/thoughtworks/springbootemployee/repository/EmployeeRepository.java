@@ -15,7 +15,6 @@ import java.util.stream.IntStream;
 @Repository
 public class EmployeeRepository {
 
-
     private static final Long START_ID_MINUS_ONE = 0L;
     private static final long ID_INCREMENT = 1;
     private final CompanyRepository companyRepository;

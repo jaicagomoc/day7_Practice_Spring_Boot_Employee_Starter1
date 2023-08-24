@@ -16,6 +16,8 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
 
+
+    //TODO: should split the repository declarations into service packages
     private final CompanyRepository companyRepository;
     private final EmployeeRepository employeeRepository;
 

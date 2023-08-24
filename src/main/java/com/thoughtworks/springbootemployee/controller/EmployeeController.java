@@ -13,16 +13,16 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-
+    //TODO: should split the repository declarations into service packages
     private final EmployeeRepository employeeRepository;
     private CompanyRepository companyRepository;
-
 
     @Autowired
     public EmployeeController(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
         this.employeeRepository = employeeRepository;
     }
 
+    //TODO: can remove this since it has no usage
     @GetMapping
     public List<Employee> listAllEmployees() {
         return employeeRepository.listAll();

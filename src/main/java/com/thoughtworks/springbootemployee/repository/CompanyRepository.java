@@ -29,6 +29,7 @@ public class CompanyRepository {
         return companies.stream().filter(company -> company.getId() == companyId).findFirst().orElseThrow(CompanyNotFoundException::new);
     }
 
+    //TODO: can remove this since it has no usage
     public List<Company> getEmployeesByPage(int pageNumber, int pageSize) {
         int startIndex = (pageNumber - 1) * pageSize;
         int endIndex = Math.min(startIndex + pageSize, companies.size());
