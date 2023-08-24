@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.model;
 
 public class Employee {
 
+    public static final int MIN_INVALID_AGE = 18;
     private Long id;
     private String name;
     private Integer age;
@@ -24,8 +25,8 @@ public class Employee {
         // Default constructor
     }
 
-    public static boolean hasInvalidAge(Employee employee) {
-        return employee.getAge() < 18;
+    public  boolean hasInvalidAge() {
+        return getAge() < MIN_INVALID_AGE;
     }
 
     public Long getId() {
