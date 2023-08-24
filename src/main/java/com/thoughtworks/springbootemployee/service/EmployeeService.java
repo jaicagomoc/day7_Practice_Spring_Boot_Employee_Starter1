@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.EmployeeCreateException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ public class EmployeeService {
     }
 
     public Employee create(Employee employee) {
+        if(employee.getAge()<18){
+            throw new EmployeeCreateException();
+        }
         return employeeRepository.saveEmployee(employee);
     }
 }
