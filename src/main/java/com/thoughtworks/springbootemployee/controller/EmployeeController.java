@@ -15,18 +15,20 @@ public class EmployeeController {
 
 
     private final EmployeeRepository employeeRepository;
+    private CompanyRepository companyRepository;
 
 
     @Autowired
     public EmployeeController(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
         this.employeeRepository = employeeRepository;
     }
+
     @GetMapping
-    public List<Employee> listAllEmployees(){
+    public List<Employee> listAllEmployees() {
         return employeeRepository.listAll();
     }
 
-    @GetMapping(params = {"pageNumber","pageSize"})
+    @GetMapping(params = {"pageNumber", "pageSize"})
     public List<Employee> listAll(@RequestParam(required = false) int pageNumber,
                                   @RequestParam(required = false) int pageSize) {
         return employeeRepository.getEmployeesByPage(pageNumber, pageSize);

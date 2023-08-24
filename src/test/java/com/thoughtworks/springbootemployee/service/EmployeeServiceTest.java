@@ -15,13 +15,13 @@ public class EmployeeServiceTest {
     private EmployeeRepository mockedEmployeeRepository;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         mockedEmployeeRepository = mock(EmployeeRepository.class);
         employeeService = new EmployeeService(mockedEmployeeRepository);
     }
 
     @Test
-    void should_return_created_employee_when_create_given_employee_service_and_valid_age(){
+    void should_return_created_employee_when_create_given_employee_service_and_valid_age() {
         //given
         Employee employee = new Employee(1L, "Alice", 25, "Female", 9000, 1L);
         Employee savedEmployee = new Employee(1L, "Alice", 24, "Female", 9000, 1L);
@@ -37,13 +37,14 @@ public class EmployeeServiceTest {
         assertEquals("Female", employeeResponse.getGender());
         assertEquals(9000, employeeResponse.getSalary());
     }
+
     @Test
-    void should_throw_exception_when_create_given_employee_whose_age_is_less_than_18(){
+    void should_throw_exception_when_create_given_employee_whose_age_is_less_than_18() {
         //given
         Employee employee = new Employee(null, "Alice", 12, "Female", 9000, 1L);
 
         //when
-        EmployeeCreateException employeeCreateException = assertThrows(EmployeeCreateException.class,() -> {
+        EmployeeCreateException employeeCreateException = assertThrows(EmployeeCreateException.class, () -> {
             employeeService.create(employee);
         });
         //then

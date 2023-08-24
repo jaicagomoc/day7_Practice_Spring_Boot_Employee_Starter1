@@ -37,6 +37,7 @@ public class CompanyApiTests {
         companyRepository.cleanAllCompanies();
         mockMvc = MockMvcBuilders.standaloneSetup(new CompanyController(companyRepository, employeeRepository)).build();
     }
+
     @Test
     void should_return_list_of_companies_when_perform_get_companies() throws Exception {
         // Given
@@ -63,6 +64,7 @@ public class CompanyApiTests {
                 .andExpect(jsonPath("$.id").value(company.getId()))
                 .andExpect(jsonPath("$.name").value("FirstCompany"));
     }
+
     @Test
     void should_return_updated_company_when_perform_put_company_given_existing_company_id_and_updated_data() throws Exception {
         // Given

@@ -21,11 +21,11 @@ public class Employee {
         this.salary = salary;
         this.companyId = companyId;
     }
+
     public Employee() {
-        // Default constructor
     }
 
-    public  boolean hasInvalidAge() {
+    public boolean hasInvalidAge() {
         return getAge() < MIN_INVALID_AGE;
     }
 
