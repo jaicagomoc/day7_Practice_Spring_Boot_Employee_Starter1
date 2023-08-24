@@ -24,6 +24,10 @@ public class Employee {
         // Default constructor
     }
 
+    public static boolean hasInvalidAge(Employee employee) {
+        return employee.getAge() < 18;
+    }
+
     public Long getId() {
         return id;
     }
